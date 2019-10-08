@@ -1,12 +1,13 @@
 import os
 from demo import config
 from flask_script import Manager
+import binascii
 
 manager = Manager()
 
 
 @manager.option('-n', '--name', dest='app_name')
-def createapp(app_name):
+def startapp(app_name):
     apps = os.path.join(config.BASE_DIR, 'apps')
     init_py = os.path.join(apps, '__init__.py')
 
@@ -43,4 +44,8 @@ def createapp(app_name):
     print('%s app create successfully' % app_name)
 
 
-
+@manager.command
+def createkey():
+    random_str = binascii.b2a_base64(os.urandom(50))
+    random_str = random_str.decode().strip()
+    return random_str

@@ -1,14 +1,14 @@
 import time
 
 from flask.views import MethodView
-from flask import session, render_template, request, url_for, redirect, Response
+from flask import session, render_template, url_for, redirect, Response
 from utils.extentions import db
 from .models import User
 from itsdangerous import JSONWebSignatureSerializer as Serializer, BadSignature
 import re
 from demo.config import SECRET_KEY
 from utils.tasks import send_register_mail
-from utils.auth import login, logout, get_current_user
+from utils.auth import login, logout, request
 
 
 class RegisterView(MethodView):

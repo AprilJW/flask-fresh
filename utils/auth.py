@@ -1,7 +1,8 @@
 from apps.user.models import User
-from utils.extentions import db, app
+from utils.extentions import db
 from functools import wraps
-from flask import session, redirect, request
+from flask import session, redirect
+from flask import request as req
 from demo.config import LOGIN_URL
 
 
@@ -30,6 +31,22 @@ def get_current_user():
     return user
 
 
+class Request(object):
+    def __init__(self,):
+        self._request = req
+
+    def __getattr__(self, item):
+        try:
+            return getattr(self._request, item)
+        except AttributeError:
+            return self.__getattribute__(item)
+
+    @property
+    def user(self):
+        user = get_current_user()
+        return user
+
+
 def login_required(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
@@ -42,3 +59,6 @@ def login_required(func):
             return redirect(redirect_url)
 
     return wrapper
+
+
+request = Request()

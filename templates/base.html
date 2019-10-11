@@ -1,0 +1,94 @@
+{#首页  登录 注册 #}
+
+<!DOCTYPE >
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>{% block title %}天天生鲜-首页{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/reset.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+
+    {% block topfiles %}
+        <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-1.12.4.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-ui.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/slide.js') }}"></script>
+    {% endblock %}
+</head>
+<body>
+
+{#网页顶部欢迎信息模块#}
+{% block header_con %}
+    <div class="header_con">
+        <div class="header">
+            <div class="welcome fl">欢迎来到天天生鲜!</div>
+            <div class="fr">
+                {% if user.is_authenticated %}
+                    <div class="login_btn fl">
+                        欢迎您： <em>{{ user.username }}</em>
+                        <span>|</span>
+                        <a href="#">退出</a>
+                    </div>
+                {% else %}
+                    <div class="login_btn fl">
+                        <a href="{{ url_for('user.login') }}">登录</a>
+                        <span>|</span>
+                        <a href="{{ url_for('user.register') }}">注册</a>
+                    </div>
+                {% endif %}
+                <div class="user_link fl">
+                    <span>|</span>
+                    <a href="{{ url_for('goods.index') }}">用户中心</a>
+                    <span>|</span>
+                    <a href="#">我的购物车</a>
+                    <span>|</span>
+                    <a href="#">我的订单</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{#网页顶部搜索框#}
+{% block search_bar %}
+    <div class="search_bar clearfix">
+        <a href="#" class="logo fl"><img src="{{ url_for('static', filename='images/logo.png') }}" alt=""></a>
+        <div class="search_con fl">
+            <form action="/search" method="get">
+                <input type="text" class="input_text fl" name="q" placeholder="搜索商品" value="">
+                <input type="submit" class="input_btn fr" name="" value="搜索">
+            </form>
+        </div>
+        <div class="guest_cart fr">
+            <a href="#" class="cart_name fl">我的购物车</a>
+            <div class="goods_count fl" id="show_count">{{ cart_count }}</div>
+        </div>
+    </div>
+{% endblock %}
+
+{#网页主题内容块#}
+{% block body %}
+{% endblock %}
+
+<div class="footer">
+    <div class="foot_link">
+        <a href="javascript:alert('待开发!');">关于我们</a>
+        <span>|</span>
+        <a href="javascript:alert('待开发!');">联系我们</a>
+        <span>|</span>
+        <a href="javascript:alert('待开发!');">招聘人才</a>
+        <span>|</span>
+        <a href="javascript:alert('待开发!');">友情链接</a>
+    </div>
+    <p>CopyRight © 2019 *************************</p>
+    <p>*********ivy***********</p>
+</div>
+
+{#网页底部div元素#}
+{% block bottom %}{% endblock %}
+
+{#网页底部文件#}
+{% block  bottomfiles %}{% endblock %}
+
+</body>
+</html>

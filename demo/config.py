@@ -19,7 +19,8 @@ TEMPLATE_FOLDER = os.path.join(BASE_DIR, 'templates')
 STATIC_FOLDER = os.path.join(BASE_DIR, 'static')
 
 INSTALL_APPS = [
-    'apps.user'
+    'apps.user',
+    'apps.goods',
 ]
 
 SESSION_TYPE = "redis"
@@ -33,3 +34,12 @@ SECRET_KEY = "BjyXUCVnmogYAlBLV9dLxUGK8WtyymyCx1F/E94T//Nf5O4dp2eQjWXnTzyQ4ha1UC
 # sessons是否长期有效，false，则关闭浏览器，session失效
 SESSION_PERMANENT = True
 SESSION_REDIS = StrictRedis(host=REDIS_HOST, port=REDIS_PORT)
+
+EMAIL_HOST = 'smtp.qq.com'
+EMAIL_USER = '919624032@qq.com'
+EMAIL_PASS = 'qngkmtqtcakvbgaf'
+EMAIL_PORT = 25  #
+AUTHORIZATION_CODE = 'hujiakeji2019'
+DOMAIN = 'http://127.0.0.1:5000'
+
+LOGIN_URL = '/user/login'

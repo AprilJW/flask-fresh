@@ -7,3 +7,4 @@ blue_print.add_url_rule('/register', view_func=views.RegisterView.as_view('regis
 blue_print.add_url_rule('/login', view_func=views.LoginView.as_view('login'))
 blue_print.add_url_rule('/logout', view_func=views.LogoutView.as_view('logout'))
 blue_print.add_url_rule('/active/<token>', view_func=views.ActiveView.as_view('active'))
+blue_print.add_url_rule('/address', view_func=views.AddressView.as_view('address'))

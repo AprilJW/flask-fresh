@@ -1,5 +1,6 @@
 from flask.views import MethodView
 from utils.auth import login_required
+from flask import render_template
 
 
 class IndexView(MethodView):
@@ -36,4 +37,4 @@ class IndexView(MethodView):
         # }
 
         # return render(request, 'index.html', context)
-        return 'index'
+        return render_template('html/index.html')

@@ -3,7 +3,7 @@ import time
 from flask.views import MethodView
 from flask import session, render_template, url_for, redirect, Response
 from utils.extentions import db
-from .models import User
+from .models import User, Address
 from itsdangerous import JSONWebSignatureSerializer as Serializer, BadSignature
 import re
 from demo.config import SECRET_KEY
@@ -107,3 +107,54 @@ class LogoutView(MethodView):
     def get(self):
         logout()
         return redirect(url_for('user.login'))
+
+
+class UserInfoView(MethodView):
+    def get(self):
+        # 获取用户的个人信息
+
+        # 获取用户的历史浏览记录
+        pass
+
+
+class UserOrderInfo(MethodView):
+    def get(self):
+        # 获取用户的订单信息
+
+        pass
+
+
+class AddressView(MethodView):
+    def get(self):
+        # 获取用户的默认收货地址
+        user = request.user
+
+        address = db.session.query(Address).filter(Address._user == user, Address.is_default == True).first()
+
+        return render_template('user_center_site.html', **{'page': 'address', 'address': address, 'user': user})
+
+    def post(self):
+        '''地址的添加'''
+        # 接受数据
+        receiver = request.form.get('receiver')
+        addr = request.form.get('addr')
+        zip_code = request.form.get('zip_code')
+        phone = request.form.get('phone')
+        # 校验数据
+        if not all([receiver, addr, phone]):
+            return render_template('user_center_site.html', errmsg="数据不完整!")
+        reg = '1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}'
+        if not re.match(reg, phone):
+            return render_template('user_center_site.html', **{'page': 'address', 'errmsg': '手机号码格式错误!'})
+        # 业务处理 地址添加
+        user = request.user
+        address = db.session.query(Address).filter(Address._user == user, Address.is_default == True).first()
+        # 查询有没有默认地址，没有就将当前的数据添加为默认收货地址
+        is_default = False if address else True
+
+        course = Address(addr=addr, phone=phone, receiver=receiver, is_default=is_default, zip_code=zip_code)
+        course._user = user
+        db.session.add(course)
+        db.session.commit()
+        # 返回应答
+        return redirect(url_for('user.address'))

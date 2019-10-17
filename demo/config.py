@@ -43,3 +43,6 @@ AUTHORIZATION_CODE = 'hujiakeji2019'
 DOMAIN = 'http://127.0.0.1:5000'
 
 LOGIN_URL = '/user/login'
+
+
+AUTH_USER_MODEL = 'user.User'

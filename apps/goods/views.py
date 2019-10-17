@@ -6,6 +6,7 @@ class IndexView(MethodView):
     decorators = [login_required]
 
     def get(self):
+
         # 获取商品种类
         # types =     GoodsType.objects.all()
         # # 获取首页轮播商品信息

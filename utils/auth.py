@@ -1,9 +1,9 @@
-from apps.user.models import User
 from utils.extentions import db
 from functools import wraps
 from flask import session, redirect
-from flask import request as req
-from demo.config import LOGIN_URL
+import flask
+from demo.config import LOGIN_URL, AUTH_USER_MODEL
+import importlib
 
 
 def login(user):
@@ -14,11 +14,13 @@ def logout():
     session.clear()
 
 
-class AnonymousUser(object):
+def initialize_user_model():
+    app, user_model_class = AUTH_USER_MODEL.split('.')
+    model = importlib.import_module('apps.%s.models' % app)
 
-    @property
-    def is_authenticated(self):
-        return False
+    user_model = getattr(model, user_model_class)
+
+    return user_model
 
 
 def get_current_user():
@@ -26,14 +28,29 @@ def get_current_user():
     if not user_id:
         user = AnonymousUser()
     else:
-        user = db.session.query(User).filter(User.id == user_id).first()
+        user_model = initialize_user_model()
+        user = db.session.query(user_model).filter(user_model.id == user_id).first()
 
     return user
 
 
+class AnonymousUser(object):
+    id = None
+    pk = None
+    username = ''
+
+    @property
+    def is_authenticated(self):
+        return False
+
+    @property
+    def is_anonymous(self):
+        return True
+
+
 class Request(object):
-    def __init__(self,):
-        self._request = req
+    def __init__(self):
+        self._request = flask.request
 
     def __getattr__(self, item):
         try:

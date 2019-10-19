@@ -8,13 +8,13 @@
                 <span></span>
                 <ul class="subnav">
                     {% for type in types %}
-                    <li><a href="{% url 'goods:index'  %}#model0{{ forloop.counter }}" class="{{ type.logo }}">{{ type.name }}</a></li>
+                    <li><a href="{{ url_for('goods.index') }}#model0{{ loop.index }}" class="{{ type.logo }}">{{ type.name }}</a></li>
                     {% endfor %}
 
                 </ul>
             </div>
             <ul class="navlist fl">
-                <li><a href="{% url 'goods:index' %}">首页</a></li>
+                <li><a href="{{ url_for('goods.index') }}">首页</a></li>
                 <li class="interval">|</li>
                 <li><a href="javascript:alert('待开发!');">手机生鲜</a></li>
                 <li class="interval">|</li>

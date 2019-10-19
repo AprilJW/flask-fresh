@@ -1,17 +1,15 @@
 {% extends 'base.html' %}
-{% load static %}
-{% load cache %}
 {% block title %}天天生鲜-首页{% endblock %}
 
 {% block topfiles %}
-    <script type="text/javascript" src="{% static 'js/jquery-1.12.4.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/jquery-ui.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/slide.js' %}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-1.12.4.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-ui.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/slide.js') }}"></script>
 {% endblock %}
 
 
 
-{% cache 3600 body %}
+
 {% block body %}
 
 
@@ -19,7 +17,7 @@
         <div class="navbar">
             <h1 class="fl">全部商品分类</h1>
             <ul class="navlist fl">
-                <li><a href="{% url 'goods:index' %}">首页</a></li>
+                <li><a href="#">首页</a></li>
                 <li class="interval">|</li>
                 <li><a href="javascript:alert('待开发!');">手机生鲜</a></li>
                 <li class="interval">|</li>
@@ -31,13 +29,14 @@
     <div class="center_con clearfix">
         <ul class="subnav fl">
             {% for type in types %}
-                <li><a href="#model0{{ forloop.counter }}" class="{{ type.logo }}">{{ type.name }}</a></li>
+                <li><a href="#model0{{ loop.index }}" class="{{ type.logo }}">{{ type.name }}</a></li>
             {% endfor %}
         </ul>
         <div class="slide fl">
             <ul class="slide_pics">
                 {% for banner in GoodsBanner %}
-                    <li><a href="{% url 'goods:detail' banner.sku.id %}"><img src="{{ banner.image.url }}" alt="幻灯片"></a></li>
+                    <li><a href="#"><img src="http://img.summerleaves.cn/{{ banner.image }}"
+                                                                              alt="幻灯片"></a></li>
                 {% endfor %}
 
             </ul>
@@ -47,34 +46,33 @@
         </div>
         <div class="adv fl">
             {% for banner in PromotionBanner %}
-                <a href="{{ banner.url }}"><img src="{{ banner.image.url }}" alt=""></a>
+                <a href="{{ banner.url }}"><img src="http://img.summerleaves.cn/{{ banner.image }}" alt=""></a>
             {% endfor %}
-
-
         </div>
     </div>
 
     {% for type in types %}
         <div class="list_model">
             <div class="list_title clearfix">
-                <h3 class="fl" id="model0{{ forloop.counter }}">{{ type.name }}</h3>
+                <h3 class="fl" id="model0{{ loop.index }}">{{ type.name }}</h3>
                 <div class="subtitle fl">
                     <span>|</span>
                     {% for banner in type.tltle_banner %}
-                        <a href="{% url 'goods:detail' banner.sku.id %}">{{ banner.sku.name }}</a>
+                        <a href="#">{{ banner._sku.name }}</a>
                     {% endfor %}
                 </div>
-                <a href="{% url 'goods:list' type.id 1 %}" class="goods_more fr" id="fruit_more">查看更多 ></a>
+                <a href="#" class="goods_more fr" id="fruit_more">查看更多 ></a>
             </div>
 
             <div class="goods_con clearfix">
-                <div class="goods_banner fl"><img src="{{ type.image.url }}" alt=""></div>
+                <div class="goods_banner fl"><img src="http://img.summerleaves.cn/{{ type.image }}" alt=""></div>
                 <ul class="goods_list fl">
                     {% for banner in type.img_banner %}
                         <li>
-                            <h4><a href="#">{{ banner.sku.name }}</a></h4>
-                            <a href="{% url 'goods:detail' banner.sku.id %}"><img src="{{ banner.sku.image.url }}" alt=""></a>
-                            <div class="prize">¥ {{ banner.sku.price }}</div>
+                            <h4><a href="#">{{ banner._sku.name }}</a></h4>
+                            <a href="#"><img src="http://img.summerleaves.cn/{{ banner._sku.image }}"
+                                                                                  alt=""></a>
+                            <div class="prize">¥ {{ banner._sku.price }}</div>
                         </li>
                     {% endfor %}
                 </ul>
@@ -83,4 +81,3 @@
     {% endfor %}
 
 {% endblock %}
-{% endcache %}

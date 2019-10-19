@@ -1,6 +1,8 @@
 import smtplib
 from email.mime.text import MIMEText
 from demo.config import EMAIL_HOST, EMAIL_PORT, EMAIL_USER, EMAIL_PASS, DOMAIN
+from demo.config import REDIS_HOST
+import redis
 
 
 def send_mail(subject, receiver, html_message):
@@ -15,4 +17,6 @@ def send_mail(subject, receiver, html_message):
     smtp.quit()
 
 
-
+def get_redis_connection(db=1, *args, **kwargs):
+    coon = redis.StrictRedis(db=db, *args, **kwargs)
+    return coon

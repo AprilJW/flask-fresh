@@ -1,18 +1,17 @@
 {% extends 'base_detail_list.html' %}
-{% load static %}
 {% block title %}天天生鲜-商品详情{% endblock %}
 
 {% block main_content %}
 
     <div class="breadcrumb">
-        <a href="{% url 'goods:index' %}">全部分类</a>
+        <a href="{{ url_for('goods.index') }}">全部分类</a>
         <span>></span>
-        <a href="{% url 'goods:index' %}">{{ sku.type.name }}</a>
+        <a href="{{ url_for('goods.index') }}">{{ sku.type.name }}</a>
         <span>></span>
         <a href="#">商品详情</a>
     </div>
     <div class="goods_detail_con clearfix">
-        <div class="goods_detail_pic fl"><img src="{{ sku.image.url }}" alt=""></div>
+        <div class="goods_detail_pic fl"><img src="http://img.summerleaves.cn/{{ sku.image }}" alt=""></div>
 
         <div class="goods_detail_list fr">
             <h3>{{ sku.name }}</h3>
@@ -33,7 +32,7 @@
                 <p>其他规格：</p>
                 <ul>
                     {% for sku in same_spu_skus %}
-                        <li><a href="{% url 'goods:detail' sku.id %}">{{ sku.name }}</a></li>
+                        <li><a href="#">{{ sku.name }}</a></li>
                     {% endfor %}
                 </ul>
 
@@ -55,7 +54,7 @@
                 <ul>
                     {% for sku in new_skus %}
                         <li>
-                            <a href="{% url 'goods:detail' sku.id %}"><img src="{{ sku.image.url }}" alt=""></a>
+                            <a href="#"><img src="http://img.summerleaves.cn/{{ sku.image }}" alt=""></a>
                             <h4><a href="#">{{ sku.name }}</a></h4>
                             <div class="prize">￥{{ sku.price }}</div>
                         </li>
@@ -91,10 +90,10 @@
 
 {% block bottom %}
     <div class="add_jump"></div>
-    {% csrf_token %}
+
 {% endblock %}
 {% block bottomfiles %}
-    <script type="text/javascript" src="{% static 'js/jquery-1.12.4.min.js' %}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-1.12.4.min.js') }}"></script>
     <script type="text/javascript">
         update_goods_amount();
         function update_goods_amount() {
@@ -163,7 +162,7 @@
             // 发起请求
             $.ajax({
                 type: 'post',
-                url: "{% url 'cart:add' %}",
+                url: "",
                 data: {
                     sku_id: sku_id,
                     count: count,

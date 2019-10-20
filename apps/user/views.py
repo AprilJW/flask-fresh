@@ -2,13 +2,16 @@ import time
 
 from flask.views import MethodView
 from flask import session, render_template, url_for, redirect, Response
+
+from apps.goods.models import GoodsSKU
 from utils.extentions import db
+from utils.tools import get_redis_connection
 from .models import User, Address
 from itsdangerous import JSONWebSignatureSerializer as Serializer, BadSignature
 import re
 from demo.config import SECRET_KEY
 from utils.tasks import send_register_mail
-from utils.auth import login, logout, request
+from utils.auth import login, logout, request, login_required
 
 
 class RegisterView(MethodView):
@@ -47,7 +50,7 @@ class RegisterView(MethodView):
 
         send_register_mail(email, username, token)
 
-        return '666'
+        return redirect(url_for('user.login'))
 
 
 class LoginView(MethodView):
@@ -69,7 +72,7 @@ class LoginView(MethodView):
         if not user:
             return render_template('login.html', **{'errmsg': '用户名或密码错误!'})
 
-        if not user.active:
+        if user.active is False:
             return render_template('login.html', **{'errmsg': '用户未激活!'})
 
         login(user)
@@ -89,6 +92,7 @@ class LoginView(MethodView):
 
 
 class ActiveView(MethodView):
+
     def get(self, token):
         serializer = Serializer(SECRET_KEY)
         try:
@@ -109,22 +113,9 @@ class LogoutView(MethodView):
         return redirect(url_for('user.login'))
 
 
-class UserInfoView(MethodView):
-    def get(self):
-        # 获取用户的个人信息
-
-        # 获取用户的历史浏览记录
-        pass
-
-
-class UserOrderInfo(MethodView):
-    def get(self):
-        # 获取用户的订单信息
-
-        pass
-
-
 class AddressView(MethodView):
+    decorators = [login_required]
+
     def get(self):
         # 获取用户的默认收货地址
         user = request.user
@@ -158,3 +149,42 @@ class AddressView(MethodView):
         db.session.commit()
         # 返回应答
         return redirect(url_for('user.address'))
+
+
+class UserInfoView(MethodView):
+    decorators = [login_required]
+
+    def get(self):
+        # 获取个人信息
+        # address = Address.objects.get_default_address(request.user)
+        address = db.session.query(Address).filter(Address.is_default == True).first()
+        # 获取浏览记录
+        conn = get_redis_connection()
+
+        history_key = 'history_%d' % request.user.id
+
+        sku_ids = conn.lrange(history_key, 0, 4)
+
+        goods_list = []
+
+        # 历史浏览记录排序
+        for sku_id in sku_ids:
+            # goods = GoodsSKU.objects.get(pk=sku_id)
+            goods = db.session.query(GoodsSKU).filter(GoodsSKU.id == sku_id).first()
+            goods_list.append(goods)
+
+        context = {
+            'page': 'user',
+            'address': address,
+            'goods_list': goods_list,
+            'user': request.user
+        }
+
+        return render_template('user_center_info.html', **context)
+
+
+class UserOrderInfo(MethodView):
+    def get(self):
+        # 获取用户的订单信息
+
+        pass

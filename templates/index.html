@@ -35,7 +35,7 @@
         <div class="slide fl">
             <ul class="slide_pics">
                 {% for banner in GoodsBanner %}
-                    <li><a href="#"><img src="{{ fdfs_img_tag(banner.image) }}"
+                    <li><a href="{{ url_for('goods.detail', pk=banner._sku.id) }}"><img src="{{ fdfs_img_tag(banner.image) }}"
                                          alt="幻灯片"></a></li>
                 {% endfor %}
 

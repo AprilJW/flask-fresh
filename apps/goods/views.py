@@ -10,7 +10,7 @@ from .models import GoodsType, IndexGoodsBanner, IndexPromotionBanner, IndexType
 
 
 class IndexView(MethodView):
-    decorators = [login_required]
+
 
     def get(self):
         # 获取商品种类

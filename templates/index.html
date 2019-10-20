@@ -17,7 +17,7 @@
         <div class="navbar">
             <h1 class="fl">全部商品分类</h1>
             <ul class="navlist fl">
-                <li><a href="#">首页</a></li>
+                <li><a href="{{ url_for('goods.index') }}">首页</a></li>
                 <li class="interval">|</li>
                 <li><a href="javascript:alert('待开发!');">手机生鲜</a></li>
                 <li class="interval">|</li>
@@ -35,8 +35,8 @@
         <div class="slide fl">
             <ul class="slide_pics">
                 {% for banner in GoodsBanner %}
-                    <li><a href="#"><img src="http://img.summerleaves.cn/{{ banner.image }}"
-                                                                              alt="幻灯片"></a></li>
+                    <li><a href="#"><img src="{{ fdfs_img_tag(banner.image) }}"
+                                         alt="幻灯片"></a></li>
                 {% endfor %}
 
             </ul>
@@ -46,7 +46,7 @@
         </div>
         <div class="adv fl">
             {% for banner in PromotionBanner %}
-                <a href="{{ banner.url }}"><img src="http://img.summerleaves.cn/{{ banner.image }}" alt=""></a>
+                <a href="{{ banner.url }}"><img src="{{ fdfs_img_tag(banner.image) }}" alt=""></a>
             {% endfor %}
         </div>
     </div>
@@ -58,20 +58,21 @@
                 <div class="subtitle fl">
                     <span>|</span>
                     {% for banner in type.tltle_banner %}
-                        <a href="#">{{ banner._sku.name }}</a>
+                        <a href="{{ url_for('goods.details', pk=banner._sku.id) }}">{{ banner._sku.name }}</a>
                     {% endfor %}
                 </div>
                 <a href="#" class="goods_more fr" id="fruit_more">查看更多 ></a>
             </div>
 
             <div class="goods_con clearfix">
-                <div class="goods_banner fl"><img src="http://img.summerleaves.cn/{{ type.image }}" alt=""></div>
+                <div class="goods_banner fl"><img src="{{ fdfs_img_tag(type.image) }}" alt=""></div>
                 <ul class="goods_list fl">
                     {% for banner in type.img_banner %}
                         <li>
                             <h4><a href="#">{{ banner._sku.name }}</a></h4>
-                            <a href="#"><img src="http://img.summerleaves.cn/{{ banner._sku.image }}"
-                                                                                  alt=""></a>
+                            <a href="{{ url_for('goods.detail', pk=banner._sku.id) }}"><img
+                                    src="{{ fdfs_img_tag(banner._sku.image) }}"
+                                    alt=""></a>
                             <div class="prize">¥ {{ banner._sku.price }}</div>
                         </li>
                     {% endfor %}

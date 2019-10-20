@@ -32,7 +32,7 @@
                 <p>其他规格：</p>
                 <ul>
                     {% for sku in same_spu_skus %}
-                        <li><a href="#">{{ sku.name }}</a></li>
+                        <li><a href="{{ url_for('goods.detail', pk=sku.id) }}">{{ sku.name }}</a></li>
                     {% endfor %}
                 </ul>
 
@@ -54,8 +54,8 @@
                 <ul>
                     {% for sku in new_skus %}
                         <li>
-                            <a href="#"><img src="http://img.summerleaves.cn/{{ sku.image }}" alt=""></a>
-                            <h4><a href="#">{{ sku.name }}</a></h4>
+                            <a href="{{ url_for('goods.detail', pk=sku.id) }}"><img src="http://img.summerleaves.cn/{{ sku.image }}" alt=""></a>
+                            <h4><a href="{{ url_for('goods.detail', pk=sku.id) }}">{{ sku.name }}</a></h4>
                             <div class="prize">￥{{ sku.price }}</div>
                         </li>
                     {% endfor %}
@@ -72,7 +72,7 @@
             <div class="tab_content">
                 <dl>
                     <dt>商品详情：</dt>
-                    <dd>{{ sku.goods.detail|safe }}
+                    <dd>{{ sku._goods.detail|safe }}
                     </dd>
                 </dl>
             </div>

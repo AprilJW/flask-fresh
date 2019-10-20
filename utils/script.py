@@ -31,7 +31,8 @@ def startapp(app_name):
         'views.py',
         'models.py',
         'urls.py',
-        'forms.py'
+        'forms.py',
+        'admin.py',
     ]
 
     current_path = [os.path.join(app_path, file) for file in files]

@@ -13,8 +13,6 @@
 		<li class="col05">小计</li>
 		<li class="col06">操作</li>
 	</ul>
-
-
     <form method="post" action="{% url 'order:place' %}">
     {% csrf_token%}
     {% for sku in skus %}

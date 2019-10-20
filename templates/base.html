@@ -27,7 +27,7 @@
                     <div class="login_btn fl">
                         欢迎您： <em>{{ user.username }}</em>
                         <span>|</span>
-                        <a href="#">退出</a>
+                        <a href="{{ url_for('user.logout') }}">退出</a>
                     </div>
                 {% else %}
                     <div class="login_btn fl">
@@ -52,9 +52,10 @@
 {#网页顶部搜索框#}
 {% block search_bar %}
     <div class="search_bar clearfix">
-        <a href="#" class="logo fl"><img src="{{ url_for('static', filename='images/logo.png') }}" alt=""></a>
+        <a href="{{ url_for('goods.index') }}" class="logo fl"><img src="{{ url_for('static', filename='images/logo.png') }}" alt=""></a>
         <div class="search_con fl">
             <form action="/search" method="get">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
                 <input type="text" class="input_text fl" name="q" placeholder="搜索商品" value="">
                 <input type="submit" class="input_btn fr" name="" value="搜索">
             </form>

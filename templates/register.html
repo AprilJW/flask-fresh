@@ -22,6 +22,7 @@
             </div>
             <div class="reg_form clearfix">
                 <form action="" method="post">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
                     <ul>
                         <li>
                             <label for="user_name">用户名:</label>

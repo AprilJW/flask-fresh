@@ -21,6 +21,8 @@ STATIC_FOLDER = os.path.join(BASE_DIR, 'static')
 INSTALL_APPS = [
     'apps.user',
     'apps.goods',
+    'apps.order',
+    # 'apps.cart',
 ]
 
 SESSION_TYPE = "redis"
@@ -44,5 +46,6 @@ DOMAIN = 'http://127.0.0.1:5000'
 
 LOGIN_URL = '/user/login'
 
-
 AUTH_USER_MODEL = 'user.User'
+
+FAST_DFS_DOMAIN = 'http://img.summerleaves.cn/'

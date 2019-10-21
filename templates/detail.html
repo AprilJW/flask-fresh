@@ -157,16 +157,16 @@
             // 获取商品的id和数量
             var sku_id = $(this).attr('sku_id');
             var count = $('.num_show').val();
-            var scrf = $('input[name="csrfmiddlewaretoken"]').val();
+            var scrf = $('input[name="csrf_token"]').val();
 
             // 发起请求
             $.ajax({
                 type: 'post',
-                url: "",
+                url: "/cart/add",
                 data: {
                     sku_id: sku_id,
                     count: count,
-                    csrfmiddlewaretoken: scrf,
+                    csrf_token: scrf,
                 },
                 success: function (data) {
                     if (data.res === 5) {

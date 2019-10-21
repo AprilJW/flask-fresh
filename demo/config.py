@@ -22,7 +22,7 @@ INSTALL_APPS = [
     'apps.user',
     'apps.goods',
     'apps.order',
-    # 'apps.cart',
+    'apps.cart',
 ]
 
 SESSION_TYPE = "redis"

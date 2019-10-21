@@ -1,6 +1,6 @@
 from flask import Blueprint
+from . import views
 
-blue_print = Blueprint('order', __name__, url_prefix='/')
+blue_print = Blueprint('order', __name__, url_prefix='/order')
 
-# blue_print.add_url_rule('', view_func=views.IndexView.as_view('index'))
-# blue_print.add_url_rule('goods/<int:pk>', view_func=views.DetailView.as_view('detail'))
+blue_print.add_url_rule('place', view_func=views.OrderPlaceView.as_view('place'))

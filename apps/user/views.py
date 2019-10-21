@@ -120,7 +120,9 @@ class AddressView(MethodView):
         # 获取用户的默认收货地址
         user = request.user
 
-        address = db.session.query(Address).filter(Address._user == user, Address.is_default == True).first()
+        # address = db.session.query(Address).filter(Address._user == user, Address.is_default == True).first()
+        address = Address.query.filter(Address._user == user, Address.is_default==True).first()
+        print(address)
 
         return render_template('user_center_site.html', **{'page': 'address', 'address': address, 'user': user})
 
@@ -157,7 +159,7 @@ class UserInfoView(MethodView):
     def get(self):
         # 获取个人信息
         # address = Address.objects.get_default_address(request.user)
-        address = db.session.query(Address).filter(Address.is_default == True).first()
+        address = db.session.query(Address).filter(Address.is_default == True, Address._user==request.user).first()
         # 获取浏览记录
         conn = get_redis_connection()
 
@@ -179,7 +181,7 @@ class UserInfoView(MethodView):
             'goods_list': goods_list,
             'user': request.user
         }
-
+        conn.close()
         return render_template('user_center_info.html', **context)
 
 

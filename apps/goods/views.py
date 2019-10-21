@@ -11,7 +11,6 @@ from .models import GoodsType, IndexGoodsBanner, IndexPromotionBanner, IndexType
 
 class IndexView(MethodView):
 
-
     def get(self):
         # 获取商品种类
         # types = GoodsType.objects.all()
@@ -41,6 +40,7 @@ class IndexView(MethodView):
             coon = get_redis_connection()
             cart_key = 'cart_%d' % request.user.id
             cart_count = coon.hlen(cart_key)
+            coon.close()
         # 模板上下文
         context = {
             'types': types,
@@ -94,6 +94,7 @@ class DetailView(MethodView):
             coon.lpush(history_key, pk)
             # 取用户保存的最新5条信息
             coon.ltrim(history_key, 0, 4)
+            coon.close()
         #
         context = {
             'sku': sku,
@@ -108,81 +109,87 @@ class DetailView(MethodView):
         return render_template('detail.html', **context)
 
 
-# class ListView(MethodView):
-#     def get(self, type_id, page):
-#         # 获取种类信息
-#         # try:
-#         #     type = GoodsType.objects.get(pk=type_id)
-#         # except GoodsType.DoesNotExist:
-#         #     return redirect(reverse('goods:index'))
-#         type = db.session.query(GoodsType).filter(GoodsType.id == type_id).first()
-#         if not type:
-#             return redirect(url_for('goods.index'))
-#
-#         # types = GoodsType.objects.all()
-#         types = db.session.query(GoodsType).all()
-#
-#         # sort = request.GET.get('sort', 'default')
-#         sort = request.args.get('sort', 'default')
-#         query = db.session.query(GoodsSKU).filter(GoodsSKU._type == type)
-#         if sort == 'price':
-#             # skus = GoodsSKU.objects.filter(type=type).order_by('price')
-#             skus = query.order_by(GoodsSKU.price)
-#         elif sort == 'hot':
-#             # skus = GoodsSKU.objects.filter(type=type).order_by('sales')
-#             skus = query.order_by(GoodsSKU.sales)
-#         else:
-#             # skus = GoodsSKU.objects.filter(type=type).order_by('-id')
-#             skus = query.order_by(desc(GoodsSKU.id))
-#
-#         # paginator = Paginator(skus, 8)
-#         paginator = Paginator(skus, 8)
-#
-#         # 对页码进行容错处理
-#         try:
-#             page = int(page)
-#         except Exception:
-#             page = 1
-#
-#         if page > paginator.num_pages:
-#             page = paginator.num_pages
-#
-#         skus_page = paginator.page(page)
-#
-#         # todo 页码的控制
-#         # 1 当总页数小于5页，页面上显示所有页面
-#         # 2 如果当前页是前三页  显示前5页的页码
-#         # 3 如果当前页是后三页码  显示后5页
-#         # 4 其他情况  显示当前页的前两页  当前页  当前页的后两页
-#         num_pages = paginator.num_pages
-#         if num_pages < 5:
-#             pages = range(1, num_pages + 1)
-#         elif page <= 3:
-#             pages = range(1, 6)
-#         elif num_pages - page <= 2:
-#             pages = range(num_pages - 4, num_pages + 1)
-#         else:
-#             pages = range(page - 2, page + 3)
-#
-#         # 获取新品信息
-#         new_skus = GoodsSKU.objects.filter(
-#             type=type).order_by('-create_time')[0:2]
-#
-#         # 获取购物车商品数量
-#         cart_count = 0
-#         if request.user.is_authenticated:
-#             coon = get_redis_connection('default')
-#             cart_key = 'cart_%d' % request.user.id
-#             cart_count = coon.hlen(cart_key)
-#
-#         context = {
-#             'type': type,
-#             'types': types,
-#             'skus_page': skus_page,
-#             'new_skus': new_skus,
-#             'cart_count': cart_count,
-#             'sort': sort,
-#             'pages': pages
-#         }
-#
-#         return render(request, 'list.html', context)
+class ListView(MethodView):
+    def get(self, type_id, page):
+        # 获取种类信息
+        # try:
+        #     type = GoodsType.objects.get(pk=type_id)
+        # except GoodsType.DoesNotExist:
+        #     return redirect(reverse('goods:index'))
+        type = db.session.query(GoodsType).filter(GoodsType.id == type_id).first()
+        if not type:
+            return redirect(url_for('goods.index'))
+
+        # types = GoodsType.objects.all()
+        types = db.session.query(GoodsType).all()
+
+        # sort = request.GET.get('sort', 'default')
+        sort = request.args.get('sort', 'default')
+        query = db.session.query(GoodsSKU).filter(GoodsSKU._goods_type == type)
+        if sort == 'price':
+            # skus = GoodsSKU.objects.filter(type=type).order_by('price')
+            skus = query.order_by(GoodsSKU.price)
+        elif sort == 'hot':
+            # skus = GoodsSKU.objects.filter(type=type).order_by('sales')
+            skus = query.order_by(GoodsSKU.sales)
+        else:
+            # skus = GoodsSKU.objects.filter(type=type).order_by('-id')
+            skus = query.order_by(desc(GoodsSKU.id))
+
+        # paginator = Paginator(skus, 8)
+
+        # 对页码进行容错处理
+        try:
+            page = int(page)
+        except Exception:
+            page = 1
+
+        paginator = skus.paginate(page, 8, False)
+
+        # if page > paginator.num_pages:
+        #     page = paginator.num_pages
+        if page > paginator.pages:
+            page = paginator.pages
+
+        skus_page = paginator.items
+
+        # todo 页码的控制
+        # 1 当总页数小于5页，页面上显示所有页面
+        # 2 如果当前页是前三页  显示前5页的页码
+        # 3 如果当前页是后三页码  显示后5页
+        # 4 其他情况  显示当前页的前两页  当前页  当前页的后两页
+        num_pages = paginator.pages
+        if num_pages < 5:
+            pages = range(1, num_pages + 1)
+        elif page <= 3:
+            pages = range(1, 6)
+        elif num_pages - page <= 2:
+            pages = range(num_pages - 4, num_pages + 1)
+        else:
+            pages = range(page - 2, page + 3)
+
+        # 获取新品信息
+        # new_skus = GoodsSKU.objects.filter(
+        #     type=type).order_by('-create_time')[0:2]
+        new_skus = GoodsSKU.query.filter(GoodsSKU._goods_type == type).order_by(desc(GoodsSKU.id))[0:2]
+
+        # 获取购物车商品数量
+        cart_count = 0
+        if request.user.is_authenticated:
+            coon = get_redis_connection('default')
+            cart_key = 'cart_%d' % request.user.id
+            cart_count = coon.hlen(cart_key)
+
+        context = {
+            'type': type,
+            'types': types,
+            'skus_page': skus_page,
+            'new_skus': new_skus,
+            'cart_count': cart_count,
+            'sort': sort,
+            'pages': pages,
+            'paginator': paginator,
+            'user': request.user
+        }
+
+        return render_template('list.html', **context)

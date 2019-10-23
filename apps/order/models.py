@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from sqlalchemy.orm import relationship
 
 from utils.extentions import db
@@ -58,7 +60,7 @@ class OrderInfo(db.Model):
     order_status = db.Column(db.SmallInteger, default=1)
     # trade_no = models.CharField(max_length=128, default='', verbose_name='支付编号')
     trade_no = db.Column(db.String(125))
-
+    create_time = db.Column(db.DateTime, default=datetime.now)
     _user = relationship('User', backref='order_info')
     _addr = relationship('Address', backref='order_info')
     # class Meta:

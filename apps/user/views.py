@@ -2,8 +2,10 @@ import time
 
 from flask.views import MethodView
 from flask import session, render_template, url_for, redirect, Response
+from sqlalchemy import desc
 
 from apps.goods.models import GoodsSKU
+from apps.order.models import OrderInfo, OrderGoods
 from utils.extentions import db
 from utils.tools import get_redis_connection
 from .models import User, Address
@@ -121,7 +123,7 @@ class AddressView(MethodView):
         user = request.user
 
         # address = db.session.query(Address).filter(Address._user == user, Address.is_default == True).first()
-        address = Address.query.filter(Address._user == user, Address.is_default==True).first()
+        address = Address.query.filter(Address._user == user, Address.is_default == True).first()
         print(address)
 
         return render_template('user_center_site.html', **{'page': 'address', 'address': address, 'user': user})
@@ -159,7 +161,7 @@ class UserInfoView(MethodView):
     def get(self):
         # 获取个人信息
         # address = Address.objects.get_default_address(request.user)
-        address = db.session.query(Address).filter(Address.is_default == True, Address._user==request.user).first()
+        address = db.session.query(Address).filter(Address.is_default == True, Address._user == request.user).first()
         # 获取浏览记录
         conn = get_redis_connection()
 
@@ -185,8 +187,58 @@ class UserInfoView(MethodView):
         return render_template('user_center_info.html', **context)
 
 
-class UserOrderInfo(MethodView):
-    def get(self):
-        # 获取用户的订单信息
+class UserOrderView(MethodView):
+    decorators = [login_required]
 
-        pass
+    def get(self, page):
+        # 获取用户的订单信息
+        user = request.user
+
+        # orders = OrderInfo.objects.filter(user=user).order_by('-create_time')
+        orders = OrderInfo.query.filter(OrderInfo._user == user).order_by(desc(OrderInfo.id)).all()
+        print(orders)
+        for order in orders:
+            # order_skus = OrderGoods.objects.filter(order_id=order.order_id)
+            order_skus = OrderGoods.query.filter(OrderGoods._order == order).all()
+            print(order_skus)
+            for order_sku in order_skus:
+                amount = order_sku.count * order_sku.price
+                order_sku.amount = amount
+                print(order_sku.amount)
+
+            order.order_skus = order_skus
+            order.status_name = OrderInfo.ORDER_STATUS[order.order_status]
+        """ 分页先放置
+        paginator = orders.paginate(page, 8, False)
+
+        # 对页码进行容错处理
+        try:
+            page = int(page)
+        except Exception:
+            page = 1
+
+        if page > paginator.pages:
+            pages = paginator.pages
+
+        order_page = paginator.items
+
+        # TODO 页码控制
+        num_pages = paginator.num_pages
+        if num_pages < 5:
+            pages = range(1, num_pages + 1)
+        elif page <= 3:
+            pages = range(1, 6)
+        elif num_pages - page <= 2:
+            pages = range(num_pages - 4, num_pages + 1)
+        else:
+            pages = range(page - 2, page + 3)
+        """
+
+        context = {
+            'order_page': orders,
+            # 'pages': pages,
+            'page': 'order',
+            'user': user
+        }
+
+        return render_template('user_center_order.html', **context)

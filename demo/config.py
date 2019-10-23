@@ -1,7 +1,11 @@
 import os
 from redis import StrictRedis
-
+import sys
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, BASE_DIR)
+sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
+sys.path.insert(0, os.path.join(BASE_DIR, 'utils'))
+
 
 DATABASE = {
     'USERNAME': 'root',
@@ -50,7 +54,6 @@ LOGIN_URL = '/user/login'
 AUTH_USER_MODEL = 'user.User'
 
 FAST_DFS_DOMAIN = 'http://img.summerleaves.cn/'
-
 
 ALIPAY_APP_ID = '2016101300674998'
 

@@ -1,6 +1,6 @@
 from sqlalchemy.orm import relationship
 
-from utils.extentions import db
+from utils.extentions import  db
 
 from werkzeug.security import check_password_hash, generate_password_hash
 

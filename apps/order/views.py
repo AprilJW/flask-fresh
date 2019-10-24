@@ -10,7 +10,7 @@ from utils.auth import login_required, request
 from utils.extentions import db
 from alipay import AliPay
 from utils.tools import get_redis_connection
-from demo import config
+import config
 from time import sleep
 
 

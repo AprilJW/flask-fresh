@@ -2,7 +2,7 @@ from utils.extentions import db
 from functools import wraps
 from flask import session, redirect
 import flask
-from demo.config import LOGIN_URL, AUTH_USER_MODEL
+from config import LOGIN_URL, AUTH_USER_MODEL
 import importlib
 
 

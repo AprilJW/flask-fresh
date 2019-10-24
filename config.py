@@ -1,16 +1,15 @@
 import os
 from redis import StrictRedis
 import sys
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, BASE_DIR)
-sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
-sys.path.insert(0, os.path.join(BASE_DIR, 'utils'))
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
+# sys.path.insert(0, os.path.join(BASE_DIR, 'utils'))
 
 DATABASE = {
     'USERNAME': 'root',
     'PASSWORD': 'qwe123',
-    'HOST': 'localhost',
+    'HOST': '39.108.125.89',
     'PORT': 3306,
     'DATABASE': 'flask-env'
 }
@@ -31,9 +30,9 @@ INSTALL_APPS = [
 
 SESSION_TYPE = "redis"
 # 设置redis的ip,port,有效时间
-REDIS_HOST = "127.0.0.1"
+REDIS_HOST = "39.108.125.89"
 REDIS_PORT = 6379
-REDIS_PASSWORD = ''
+REDIS_PASSWORD = 'qwe123'
 # 是否强制加盐，混淆session
 SESSION_USE_SIGNER = True
 # 如果加盐，那么必须设置的安全码，盐

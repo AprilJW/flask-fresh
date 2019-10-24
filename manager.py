@@ -1,6 +1,6 @@
 from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager
-from demo.app import create_app
+from app import create_app
 from utils import extentions, script
 
 app = create_app()

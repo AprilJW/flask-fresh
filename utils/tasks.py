@@ -1,4 +1,4 @@
-from demo.config import DOMAIN
+from config import DOMAIN
 from .tools import send_mail
 
 

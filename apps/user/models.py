@@ -29,7 +29,6 @@ class User(db.Model):
     @classmethod
     def authenticated(cls, username, password):
         user = db.session.query(cls).filter(cls.username == username).first()
-        print(user)
         if not user:
             return False
         return user if check_password_hash(user.password, password) else False

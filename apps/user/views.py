@@ -11,7 +11,7 @@ from utils.tools import get_redis_connection
 from .models import User, Address
 from itsdangerous import JSONWebSignatureSerializer as Serializer, BadSignature
 import re
-from demo.config import SECRET_KEY
+from config import SECRET_KEY
 from utils.tasks import send_register_mail
 from utils.auth import login, logout, request, login_required
 
@@ -124,7 +124,6 @@ class AddressView(MethodView):
 
         # address = db.session.query(Address).filter(Address._user == user, Address.is_default == True).first()
         address = Address.query.filter(Address._user == user, Address.is_default == True).first()
-        print(address)
 
         return render_template('user_center_site.html', **{'page': 'address', 'address': address, 'user': user})
 

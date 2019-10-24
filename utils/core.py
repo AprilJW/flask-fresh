@@ -1,5 +1,5 @@
 import importlib
-from demo.config import INSTALL_APPS
+from config import INSTALL_APPS
 
 
 class DemoInit(object):
@@ -29,20 +29,22 @@ class DemoInit(object):
             module = '%s.admin' % module
             importlib.import_module(module)
 
-    def initialize_template_tags(self):
-        '''初始化模板标签文件'''
-        try:
-            from . import template_tags
-        except ImportError as e:
-            raise e
+    # def initialize_template_tags(self):
+    #     '''初始化模板标签文件'''
+    #     try:
+    #         from . import template_tags
+    #     except ImportError as e:
+    #         raise e
 
-    def init(self, *args, **kwargs):
+    def init_extentions(self, extentions, *args, **kwargs):
+        for each in extentions:
+            each.init_app(self.app)
+
+    def init(self, extentions, *args, **kwargs):
         '''初始化全局配置'''
+        self.init_extentions(extentions, *args, **kwargs)
         self.import_modules()
         self.register_blue_print()
         self.initialize_admin()
-        self.initialize_template_tags()
-        try:
-            from . import extentions
-        except ImportError as e:
-            raise e
+        # self.initialize_template_tags()
+        return self.app

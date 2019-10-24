@@ -5,7 +5,7 @@ flask版本: [http://flask.summerleaves.cn/](http://flask.summerleaves.cn/)
 django版本: [https://fresh.summerleaves.cn/](https://fresh.summerleaves.cn/)    
 
 ###  技术栈
-* 语言：Python3.6.8  (Django==1.1.1)
+* 语言：Python3.6.8  (flask==1.1.1)
 * 数据库: MySql、 redis 
 * 任务队列(异步处理): celery
 * 分布式文件存储: FastDFS

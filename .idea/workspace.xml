@@ -2,23 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="63d9c900-bd27-49f5-863f-46c7d8dc3b77" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/flask-demo.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/flask-demo.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uwsgi.ini" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/order/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/order/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/user/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/user/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apps/user/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/apps/user/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/base_user_center.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base_user_center.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/auth.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/core.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/core.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/extentions.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/extentions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/script.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/script.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/utils/tasks.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/tasks.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/template_tags.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/tools.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/tools.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -248,7 +238,7 @@
       <workItem from="1571658940907" duration="8298000" />
       <workItem from="1571741961875" duration="4716000" />
       <workItem from="1571840531366" duration="7184000" />
-      <workItem from="1571898572590" duration="3044000" />
+      <workItem from="1571898572590" duration="5601000" />
     </task>
     <servers />
   </component>

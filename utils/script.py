@@ -1,5 +1,5 @@
 import os
-from demo import config
+import config
 from flask_script import Manager
 import binascii
 
